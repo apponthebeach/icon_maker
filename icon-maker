@@ -1,0 +1,26 @@
+#-------------
+#!/bin/bash
+#This script's purpose is to create all icons needed for an iOS app for iPhone
+iosFolder="ios"
+originalFolder="original"
+if [ ! -d "$iosFolder" ]; then
+   mkdir "$iosFolder"
+fi
+if [ ! -d "$originalFolder" ]; then
+   mkdir "$originalFolder"
+fi
+
+for filename in *; do
+   fileExt="${filename##*.}"
+   if [ "$fileExt" = "png" ]; then
+      filenameNoExt="${filename%.*}"
+      sips -s format png -z 32 32 $filename --out $iosFolder/$filenameNoExt.png
+      sips -s format png -z 64 64 $filename --out $iosFolder/$filenameNoExt@2x.png
+      sips -s format png -z 96 96 $filename --out $iosFolder/$filenameNoExt@3x.png
+      mv $filename $originalFolder/$filename
+   fi
+done
+
+exit
+
+#--------------------------
